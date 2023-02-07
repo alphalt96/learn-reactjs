@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './assets/logo.svg';
 import './App.css';
+import { LiveManagement } from './components/liveManagement';
 
 function App() {
   return (
@@ -15,17 +16,17 @@ function App() {
           menu list
         </div>
       </div>
-      <div className="bg-blue-200 flex flex-col w-full">
+      <div className="flex flex-col w-full">
         <div className="bg-white h-80 flex flex-row">
           {/* search bar + user icon */}
           <div className="w-full bg-yellow-100">
             search
           </div>
-          <div className="bg-pink-200">
+          <div className="bg-pink-200 ">
             user logo
           </div>
         </div>
-        content
+        <LiveManagement/>
       </div>
     </div>
   );
