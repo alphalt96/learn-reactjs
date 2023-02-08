@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       width: {
-        120: '120px'
+        120: '120px',
+        400: '400px'
       },
       height: {
         80: '80px',
@@ -16,6 +17,9 @@ module.exports = {
         240: '240px'
       }
     },
+    animation: {
+      fade: 'fadeOut 3s ease-in-out',
+    }
   },
   plugins: [],
 }
