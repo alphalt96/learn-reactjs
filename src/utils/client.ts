@@ -1,7 +1,29 @@
 import { LiveCategory } from "./enums";
+import Envs from './env';
 
 export class Client {
-  constructor() { }
+  constructor(
+    private readonly API_ENDPOINT = Envs.API_ENDPOINT || ''
+  ) { }
+
+  async verifyToken(credential: string) {
+    const response = await fetch(
+      `${this.API_ENDPOINT}/verify-token`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          credential
+        })
+      }
+    );
+
+    const payload = await response.json();
+    
+    return payload;
+  }
 
   getLivesByCategory(category: string) {
     let data: any[] = [];
