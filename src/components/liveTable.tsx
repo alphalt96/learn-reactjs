@@ -3,40 +3,77 @@ import React from 'react';
 import client from '../utils/client';
 import { LiveManagementStateType, LiveStateType } from '../utils/types';
 import temoraryImage from '../assets/1.jpeg';
+import { Pagination } from './pagination';
+import { LiveCategory } from '../utils/enums';
 
 const tableCols = [
   'ID', 'Title', 'Status'
 ];
+
+const pageSize = 8;
 
 export class LiveTable extends React.Component<LiveManagementStateType, LiveStateType> {
   constructor(props: any) {
     super(props);
 
     this.state = {
-      lives: []
+      lives: [],
+      currentPage: 1,
+      totalCount: 1
     }
+
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentDidMount(): void {
-    this.setState((state, props) => ({
-      lives: client.getLivesByCategory(this.props.currentTab)
-    }));
+    client.getLivesByCategory(
+      this.props.currentTab as LiveCategory,
+      this.state.currentPage,
+      pageSize
+    ).then((data) => {
+      this.setState((state, props) => ({
+        lives: data.data,
+        totalCount: data.pagination.totalCount
+      }));
+    })
   }
 
   componentDidUpdate(prevProps: Readonly<LiveManagementStateType>, prevState: Readonly<LiveStateType>): void {
-    if (prevProps.currentTab !== this.props.currentTab) {
-      const updatedLiveList = client.getLivesByCategory(this.props.currentTab);
-      this.setState({
-        lives: updatedLiveList
+    if (
+      prevProps.currentTab !== this.props.currentTab ||
+      prevState.currentPage !== this.state.currentPage 
+    ) {
+      let requestPageIndex = 1;
+
+      if (prevState.currentPage !== this.state.currentPage) {
+        requestPageIndex = this.state.currentPage;
+      }
+
+      client.getLivesByCategory(
+        this.props.currentTab as LiveCategory,
+        requestPageIndex,
+        pageSize
+      ).then(data => {
+        this.setState({
+          lives: data.data,
+          totalCount: data.pagination.totalCount,
+          currentPage: requestPageIndex
+        });
       });
     }
+  }
+
+  handlePageChange(pageIndex: number) {
+    this.setState({
+      currentPage: pageIndex
+    });
   }
 
   render() {
     return (
       <div>
         <table 
-          className="table-auto w-full"
+          className="table-auto w-full mb-20"
         >
           <thead>
             <tr>
@@ -70,6 +107,13 @@ export class LiveTable extends React.Component<LiveManagementStateType, LiveStat
             })}
           </tbody>
         </table>
+        <Pagination
+          totalCount={this.state.totalCount}
+          pageSize={8}
+          currentPage={this.state.currentPage}
+          siblingCount={4}
+          onPageChange={this.handlePageChange}
+        />
       </div>
     )
   }

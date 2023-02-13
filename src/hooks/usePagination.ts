@@ -14,48 +14,31 @@ export function usePagination ({
   currentPage
 }: IPaginationOptions) {
   const paginationRange = useMemo(() => {
-    const totalPageCount = Math.ceil(totalCount / pageSize);
+    let result: any[] = [];
 
-    const totalPageNumbers = siblingCount + 5;
+    const totalPage = Math.ceil(totalCount / pageSize);
+  
+    const firstPage = 1;
+    const lastPage = totalPage;
+  
+    const siblingLeftIndex = currentPage - siblingCount;
+    const siblingRightIndex = currentPage + siblingCount;
 
-    if (totalPageNumbers >= totalPageCount) {
-      return range(1, totalPageCount);
+    // if total sibling of the left side and the right side of current page greater than total page
+    // include the current page, the first page and the last page
+    const showAllPages = siblingCount * 2 + 3 > totalPage;
+  
+    if (showAllPages) {
+      result = range(firstPage, totalPage);
+    } else if (siblingLeftIndex <= 1) {
+      result = [...range(firstPage, currentPage + siblingCount), '...', lastPage];
+    } else if (siblingRightIndex >= lastPage) {
+      result = [firstPage, '...', ...range(currentPage - siblingCount, lastPage)];
+    } else {
+      result = [firstPage, '...', ...range(currentPage - siblingCount, currentPage + siblingCount), '...', lastPage];
     }
-
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-    const rightSiblingIndex = Math.min(
-      currentPage + siblingCount,
-      totalPageCount
-    );
-
-    const shouldShowLeftDots = leftSiblingIndex > 2 // first 2 page, if the sibling of left side is 3 then shouldn't show page index 2, show dots instead;
-    const shouldShowRightDots = rightSiblingIndex < totalPageCount - 2;
-
-    const firstPageIndex = 1;
-    const lastPageIndex = totalPageCount;
-
-    if (!shouldShowLeftDots && shouldShowLeftDots) {
-      let leftItemCount = 3 + 2 * siblingCount;
-      let leftRange = range(2, leftItemCount);
-
-      return [...leftRange, '...', totalPageCount];
-    }
-
-    if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 + 2 * siblingCount;
-      let rightRange = range(
-        totalPageCount - rightItemCount + 1,
-        totalPageCount
-      );
-
-      return [firstPageIndex, '...', ...rightRange];
-    }
-
-    if (shouldShowLeftDots && shouldShowRightDots) {
-      let middleRange = range(leftSiblingIndex, rightSiblingIndex);
-      
-      return [firstPageIndex, '...', ...middleRange, '...', lastPageIndex];
-    }
+  
+    return result;
   }, [totalCount, pageSize, siblingCount, currentPage]);
 
   return paginationRange;
