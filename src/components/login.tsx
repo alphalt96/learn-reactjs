@@ -8,12 +8,21 @@ import Spinner from './spinner';
 
 const InvalidAccessMessageDuration = 5000 // 5 secs
 
+type FormErrors = {
+  usernameError: string | null;
+  passwordError: string | null;
+}
+
 export function Login() {
   // Define login form states
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [invalidAccess, setInvalidAccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({
+    usernameError: null,
+    passwordError: null
+  });
   const navigate = useNavigate();
 
   // init mock data
@@ -41,6 +50,27 @@ export function Login() {
     }
 
     return false;
+  }
+
+  const onChangeFieldInputs = (e: any) => {
+    if (e.target.name === 'username') {
+      const value = e.target.value;
+      const regex = /^[a-zA-Z0-9_.-]*$/
+      if (!regex.test(value)) {
+        setErrors({
+          ...errors,
+          usernameError: 'Only letter and number are allowed.'
+        });
+      } else {
+        setErrors({
+          ...errors,
+          usernameError: null
+        });
+      }
+      setUsername(e.target.value);
+    } else if (e.target.name === 'password') {
+      setPassword(e.target.value);
+    }
   }
 
   const handleLoginSubmit = (e: any) => {
@@ -85,17 +115,24 @@ export function Login() {
       >
         <label>Username</label>
         <input
+          name="username"
           type="text"
           value={username}
           className="outline-none font-bold border-b-2 font-bold border-b-2 border-gray-200 p-2 my-3"
-          onChange={e => setUsername(e.target.value)}
+          onChange={onChangeFieldInputs}
         />
+        {errors.usernameError && (
+          <p
+            className="text-red-500"
+          >{errors.usernameError}</p>
+        )}
         <label>Password</label>
         <input
+          name="password"
           type="password"
           value={password}
           className="outline-none font-bold border-b-2 font-bold border-b-2 border-gray-200 p-2 my-3"
-          onChange={e => setPassword(e.target.value)}
+          onChange={onChangeFieldInputs}
         />
         <button
           type="submit"
