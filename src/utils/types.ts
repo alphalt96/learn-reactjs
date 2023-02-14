@@ -1,5 +1,7 @@
 export type LiveStateType = {
-  lives: any[]
+  lives: any[],
+  currentPage: number,
+  totalCount: number
 }
 
 export type LiveManagementStateType = { 

@@ -25,54 +25,27 @@ export class Client {
     return payload;
   }
 
-  getLivesByCategory(category: string) {
+  async getLivesByCategory(category: LiveCategory, pageIndex: number, pageSize: number) {
     let data: any[] = [];
+    const query = new URLSearchParams({
+      category,
+      pageIndex: `${pageIndex}`,
+      pageSize: `${pageSize}`
+    });
 
-    // mock data, will be replaced by api implementation
-    switch (category) {
-      case LiveCategory.OnSchedule:
-        data = [
-          {
-            id: 1,
-            title: 'live stream 1',
-            status: 'on-schedule',
-            image: ''
-          }
-        ];
-        break;
-      case LiveCategory.Live:
-        data = [
-          {
-            id: 2,
-            title: 'live stream 2',
-            status: 'live',
-            image: ''
-          }
-        ];
-        break;
-      case LiveCategory.Finished:
-        data = [
-          {
-            id: 3,
-            title: 'live stream 3',
-            status: 'finished',
-            image: ''
-          }
-        ];
-        break;
-      case LiveCategory.Canceled:
-        data = [
-          {
-            id: 4,
-            title: 'live stream 4',
-            status: 'canceled',
-            image: ''
-          }
-        ];
-        break;
-    }
+    const response = await fetch(
+      `${this.API_ENDPOINT}/lives?${query.toString()}`,
+      {
+        method: 'GET'
+      }
+    );
 
-    return data;
+    const responseData = await response.json();
+
+    return {
+      data: responseData.data,
+      pagination: responseData.pagination
+    };
   }
 }
 
