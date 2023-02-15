@@ -24,7 +24,7 @@ function Home() {
 
       {/* navbar */}
       <div className="flex flex-col w-full pl-10">
-        <div className="bg-white h-80 flex flex-row gap-5">
+        <div className="bg-white h-80 flex flex-row shrink-0 gap-5">
           <div className="md:hidden flex">
             <button onClick={e => setDisplaySidebar(true)}>
               <HiMenu fontSize={40} />
