@@ -6,6 +6,7 @@ import { Sidebar } from './components/sidebar';
 import { fetchUser } from './utils/data';
 import { useState } from 'react';
 import { Navbar } from './components/navbar';
+import classes from './Home.module.css';
 
 function Home() {
   const [displaySidebar, setDisplaySidebar] = useState(false);
@@ -36,7 +37,7 @@ function Home() {
 
         {/* sidebar for mobile devices */}
         {displaySidebar && (
-          <div className="w-2/3 fixed bg-white h-full">
+          <div className={`w-2/3 fixed bg-white h-full ${classes.animateSlideIn}`}>
             <button
               className="absolute right-5 top-5"
               onClick={closeSidebar}>
