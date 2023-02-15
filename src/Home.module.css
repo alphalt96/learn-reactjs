@@ -8,5 +8,5 @@
 }
 
 .animateSlideIn {
-  animation: slideIn 0.5s ease-out;
+  animation: slideIn 2s ease-out;
 }

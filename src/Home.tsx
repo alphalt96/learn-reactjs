@@ -7,6 +7,7 @@ import { fetchUser } from './utils/data';
 import { useState } from 'react';
 import { Navbar } from './components/navbar';
 import classes from './Home.module.css';
+import Carousel from './components/carousel';
 
 function Home() {
   const [displaySidebar, setDisplaySidebar] = useState(false);
@@ -50,6 +51,7 @@ function Home() {
         {/* Routes definition */}
         <div className="overflow-scroll">
           <Routes>
+            <Route path="/" element={<HomeContent />} />
             <Route path="/profile" />
             <Route path="/lives" element={<LiveManagement />} />
           </Routes>
@@ -57,6 +59,14 @@ function Home() {
       </div>
     </div>
   );
+}
+
+function HomeContent () {
+  return (
+    <div>
+      <Carousel />
+    </div>
+  )
 }
 
 export default Home;
