@@ -1,46 +1,58 @@
-import { Link } from 'react-router-dom';
+import { Link, Routes, Route } from 'react-router-dom';
+import { HiMenu } from 'react-icons/hi';
+import { MdCancel } from 'react-icons/md';
 import { LiveManagement } from './components/liveManagement';
+import { Sidebar } from './components/sidebar';
 import { fetchUser } from './utils/data';
+import { useState } from 'react';
+import { Navbar } from './components/navbar';
 
 function Home() {
+  const [displaySidebar, setDisplaySidebar] = useState(false);
   const user = fetchUser();
 
+  const closeSidebar = () => {
+    setDisplaySidebar(false);
+  }
+
   return (
-    <div className="flex flex-row h-screen w-screen">
-      <div className="flex flex-col min-w-240 bg-green-200">
-        {/* side bar */}
-        <div className="h-100">
-          logo
-        </div>
-        <div className="flex h-full col bg-red-100">
-          {/* categories */}
-          menu list
-        </div>
+    <div className="flex flex-col md:flex-row h-screen w-screen">
+      {/* sidebar for desktop devices */}
+      <div className="md:flex hidden flex-col min-w-240">
+        <Sidebar />
       </div>
-      <div className="flex flex-col w-full">
-        <div className="px-4 bg-white h-80 flex flex-row gap-5">
-          {/* search bar + user icon */}
-          <div className="w-full bg-yellow-100">
-            search
+
+      {/* navbar */}
+      <div className="flex flex-col w-full pl-10">
+        <div className="bg-white h-80 flex flex-row shrink-0 gap-5">
+          <div className="md:hidden flex">
+            <button onClick={e => setDisplaySidebar(true)}>
+              <HiMenu fontSize={40} />
+            </button>
           </div>
-          {user ? (
-            <div className="flex items-center">
-              <Link to="/">
-                <img className="w-20 rounded-lg" src={user.picture} alt="user-photo" />
-              </Link>
-            </div>
-          ) : (
-            <div className="flex text-center items-center">
-              <Link
-                to="/login"
-                className="text-sm w-20 rounded-md bg-lime-300 hover:bg-lime-400 text-slate-400"
-              >
-                Sign in
-              </Link>
-            </div>
-          )}
+          {/* search bar + user icon */}
+          <Navbar user={user} />
         </div>
-        <LiveManagement />
+
+        {/* sidebar for mobile devices */}
+        {displaySidebar && (
+          <div className="w-2/3 fixed bg-white h-full">
+            <button
+              className="absolute right-5 top-5"
+              onClick={closeSidebar}>
+              <MdCancel fontSize={40} />
+            </button>
+            <Sidebar closeSidebar={closeSidebar} />
+          </div>
+        )}
+
+        {/* Routes definition */}
+        <div className="overflow-scroll">
+          <Routes>
+            <Route path="/profile" />
+            <Route path="/lives" element={<LiveManagement />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );
