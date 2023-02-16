@@ -9,6 +9,25 @@ import { Navbar } from './components/navbar';
 import classes from './Home.module.css';
 import Carousel from './components/carousel';
 
+import temporaryImage1 from './assets/1.jpeg';
+import temporaryImage2 from './assets/2.jpg';
+import temporaryImage3 from './assets/3.jpg';
+
+const data = [
+  {
+    destination: '/lives',
+    img: temporaryImage1
+  },
+  {
+    destination: '/profile',
+    img: temporaryImage2
+  },
+  {
+    destination: '/analysis',
+    img: temporaryImage3
+  }
+];
+
 function Home() {
   const [displaySidebar, setDisplaySidebar] = useState(false);
   const user = fetchUser();
@@ -61,10 +80,21 @@ function Home() {
   );
 }
 
-function HomeContent () {
+function HomeContent() {
   return (
     <div>
-      <Carousel />
+      <Carousel
+        width={300}
+        height={300}
+      >
+        {data.map(item => (
+          <div>
+            <Link to={item.destination}>
+              <img src={item.img} alt="photo" />
+            </Link>
+          </div>
+        ))}
+      </Carousel>
     </div>
   )
 }
