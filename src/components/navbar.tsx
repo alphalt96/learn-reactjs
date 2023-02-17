@@ -18,7 +18,7 @@ export function Navbar({ user }: { user: any }) {
         <div className="flex text-center items-center">
           <Link
             to="/login"
-            className="text-sm w-10 h-10 mr-10 flex justify-center items-center rounded-md bg-lime-300 hover:bg-lime-400"
+            className="text-sm w-10 h-10 mr-10 flex justify-center items-center rounded-md bg-lime-300 hover:bg-lime-400 transition duration-700 hover:scale-105"
           >
             <CiLogin fontSize={20} className="text-white" />
           </Link>

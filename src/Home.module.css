@@ -1,0 +1,12 @@
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.animateSlideIn {
+  animation: slideIn 2s ease-out;
+}
