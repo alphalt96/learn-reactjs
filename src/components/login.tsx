@@ -5,6 +5,7 @@ import client from '../utils/client';
 import Envs from '../utils/env';
 import { fetchUser } from '../utils/data';
 import Spinner from './spinner';
+import samplevideo from '../assets/sample.mp4';
 
 const InvalidAccessMessageDuration = 5000 // 5 secs
 
@@ -109,59 +110,68 @@ export function Login() {
 
   return (
     <div className="w-full h-screen bg-white flex flex-col justify-center items-center">
-      <form
-        className="flex flex-col w-400"
-        onSubmit={handleLoginSubmit}
-      >
-        <label>Username</label>
-        <input
-          name="username"
-          type="text"
-          value={username}
-          className="outline-none font-bold border-b-2 font-bold border-b-2 border-gray-200 p-2 my-3"
-          onChange={onChangeFieldInputs}
-        />
-        {errors.usernameError && (
-          <p
-            className="text-red-500"
-          >{errors.usernameError}</p>
-        )}
-        <label>Password</label>
-        <input
-          name="password"
-          type="password"
-          value={password}
-          className="outline-none font-bold border-b-2 font-bold border-b-2 border-gray-200 p-2 my-3"
-          onChange={onChangeFieldInputs}
-        />
-        <button
-          type="submit"
-          className="bg-slate-500 text-white py-3 mt-5 hover:shadow-md hover:bg-slate-400"
-        >Login</button>
-        <p className="text-center py-5">Or</p>
-        <div className="flex justify-center">
-          <div id="g_id_onload"
-            data-client_id={Envs.GOOGLE_CLIENT_ID}
-            data-auto_prompt="false"
-            data-callback="handleLoginResponse"
-          >
+      <video
+        src={samplevideo}
+        className="w-full h-full object-cover"
+        controls={false}
+        autoPlay
+        loop
+        muted />
+      <div className="absolute">
+        <form
+          className="flex flex-col w-400"
+          onSubmit={handleLoginSubmit}
+        >
+          <label className="text-white">Username</label>
+          <input
+            name="username"
+            type="text"
+            value={username}
+            className="outline-none font-bold border-b-2 font-bold border-b-2 border-gray-200 p-2 my-3"
+            onChange={onChangeFieldInputs}
+          />
+          {errors.usernameError && (
+            <p
+              className="text-red-500"
+            >{errors.usernameError}</p>
+          )}
+          <label className="text-white">Password</label>
+          <input
+            name="password"
+            type="password"
+            value={password}
+            className="outline-none font-bold border-b-2 font-bold border-b-2 border-gray-200 p-2 my-3"
+            onChange={onChangeFieldInputs}
+          />
+          <button
+            type="submit"
+            className="bg-slate-500 text-white py-3 mt-5 hover:shadow-md hover:bg-slate-400"
+          >Login</button>
+          <p className="text-center py-5 text-white">Or</p>
+          <div className="flex justify-center">
+            <div id="g_id_onload"
+              data-client_id={Envs.GOOGLE_CLIENT_ID}
+              data-auto_prompt="false"
+              data-callback="handleLoginResponse"
+            >
+            </div>
+            <div className="g_id_signin"
+              data-type="standard"
+              data-size="large"
+              data-theme="outline"
+              data-text="sign_in_with"
+              data-shape="rectangular"
+              data-logo_alignment="left">
+            </div>
           </div>
-          <div className="g_id_signin"
-            data-type="standard"
-            data-size="large"
-            data-theme="outline"
-            data-text="sign_in_with"
-            data-shape="rectangular"
-            data-logo_alignment="left">
-          </div>
-        </div>
-        {invalidAccess && (
-          <div className={`transition-all duration-200 ${invalidAccess ? "opacity-100" : "opacity-0"}`}>
-            <p>Username or Password is not valid!</p>
-          </div>
-        )}
-      </form>
-      {isLoading && (<Spinner message='' />)}
+          {invalidAccess && (
+            <div className={`transition-all duration-200 ${invalidAccess ? "opacity-100" : "opacity-0"}`}>
+              <p>Username or Password is not valid!</p>
+            </div>
+          )}
+        </form>
+        {isLoading && (<Spinner message='' />)}
+      </div>
     </div>
   );
 }

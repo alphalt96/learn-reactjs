@@ -10,8 +10,8 @@ export function Navbar({ user }: { user: any }) {
       </div>
       {user ? (
         <div className="flex items-center">
-          <Link to="/">
-            <img className="w-20 rounded-lg" src={user.picture} alt="user-photo" />
+          <Link to="/" className="mr-10">
+            <img className="w-14 rounded-lg" src={user.picture} alt="user-photo" />
           </Link>
         </div>
       ) : (
